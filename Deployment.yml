@@ -1,20 +1,20 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-   name: mrdevops
+   name: website
 spec:
    replicas: 2
    selector:      # tells the controller which pods to watch/belong to
     matchLabels:
-     app: mrdevops
+     app: website
    template:
       metadata:
         labels:
-          app: mrdevops
+          app: website
       spec:
        containers:
-        - name: mrdevops
-          image: vikashashoke/pipeline-demo
+        - name: website
+          image: ranjarat/website
           imagePullPolicy: Always
           ports:
           - containerPort: 80
