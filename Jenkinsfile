@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
     environment {
         PROJECT_ID = 'boxwood-destiny-401815'
@@ -11,18 +12,10 @@ pipeline {
         stage('Git checkout'){
             steps{
                 checkout scm
-            }
-            
+            }   
         }
     
-    // stage('Push Dockerfile to Ansible'){
-    //     sshagent(['ansible']) {
-    //     sh 'ssh -o StrictHostKeyChecking=no tantely@34.129.65.70'
-    //     sh 'scp -r /var/lib/jenkins/workspace/pipeline-ci/* tantely@34.129.65.70:/home/tantely'
-    //     }
-    // }
-    
-        stage('Docker build image'){
+        stage('build image'){
             steps{
                 script{
                     website = docker.build("ranjarat/website:0.${env.BUILD_ID}")
@@ -30,17 +23,10 @@ pipeline {
             }
         }
     
-    // stage('Docker tag image'){
-    //     sshagent(['ansible']){
-    //         sh 'ssh -o StrictHostKeyChecking=no tantely@34.129.65.70 cd /home/tantely'
-    //         sh 'ssh -o StrictHostKeyChecking=no tantely@34.129.65.70 docker image tag website:0.$BUILD_ID ranjarat/website:0.$BUILD_ID'
-    //         sh 'ssh -o StrictHostKeyChecking=no tantely@34.129.65.70 docker image tag website:0.$BUILD_ID ranjarat/website:latest'
-    //     }
-    // }
-    
         stage('Push image'){
             steps{
                 script{
+                    sh 'docker rmi 0.${env.BUILD_ID-1}'
                     docker.withRegistry('https://registry.hub.docker.com', 'hub') {
                         website.push("latest")
                         website.push("0.${env.BUILD_ID}")
