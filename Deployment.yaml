@@ -18,3 +18,19 @@ spec:
           imagePullPolicy: Always
           ports:
           - containerPort: 80
+---
+
+kind: Service                             
+apiVersion: v1
+metadata:
+  name: website
+  labels:
+    app: website
+spec:
+  ports:
+    - port: 80                               
+      targetPort: 80                    
+      nodePort: 31200
+  selector:
+    app: website                    
+  type: LoadBalancer    
