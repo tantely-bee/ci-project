@@ -34,13 +34,6 @@ pipeline {
             }
         }
 
-        // stage('Deleting pushed image'){
-        //     steps{
-        //         sh 'docker rmi registry.hub.docker.com/ranjarat/website:0.${env.BUILD_ID}'
-        //     }
-        // }
-
-    
         stage('Deploy to GKE'){
             steps{
                 sh "sed -i 's/website:latest/website:0.${env.BUILD_ID}/g' deployment.yaml"
