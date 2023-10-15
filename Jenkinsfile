@@ -4,7 +4,7 @@ pipeline {
         PROJECT_ID = 'boxwood-destiny-401815'
         CLUSTER_NAME = 'autopilot-cluster'
         LOCATION = 'australia-southeast2'
-        CREDENTIALS_ID = 'gke-kubernetes'
+        CREDENTIALS_ID = '89d535d3-12ce-47ba-9d62-cd51c2ea692f'
     }
     
     stages{
