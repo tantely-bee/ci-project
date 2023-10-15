@@ -30,7 +30,7 @@ pipeline {
                         website.push("latest")
                         website.push("0.${env.BUILD_ID}")
                     }
-                    sh 'docker rmi 0.${env.BUILD_ID}'
+                    sh 'docker rmi registry.hub.docker.com/ranjarat/website:0.${env.BUILD_ID}'
                 }
             }
         }
