@@ -8,9 +8,9 @@ pipeline {
     }
     
     stages{
-    stage('Git checkout'){
-        checkout scm
-    }
+        stage('Git checkout'){
+            checkout scm
+        }
     
     // stage('Push Dockerfile to Ansible'){
     //     sshagent(['ansible']) {
@@ -19,13 +19,13 @@ pipeline {
     //     }
     // }
     
-    stage('Docker build image'){
-        steps{
-            script{
-                website = docker.build("ranjarat/website:0.${env.BUILD_ID}")
+        stage('Docker build image'){
+            steps{
+                script{
+                    website = docker.build("ranjarat/website:0.${env.BUILD_ID}")
+                }
             }
         }
-    }
     
     // stage('Docker tag image'){
     //     sshagent(['ansible']){
@@ -35,22 +35,22 @@ pipeline {
     //     }
     // }
     
-    stage('Push image'){
-        steps{
-            script{
-                docker.withRegistry('https://registry.hub.docker.com', 'hub') {
-                    website.push("latest")
-                    website.push("0.${env.BUILD_ID}")
+        stage('Push image'){
+            steps{
+                script{
+                    docker.withRegistry('https://registry.hub.docker.com', 'hub') {
+                        website.push("latest")
+                        website.push("0.${env.BUILD_ID}")
+                    }
                 }
             }
         }
-    }
     
-    stage('Deploy to GKE'){
-        steps{
-            sh "sed -i 's/website:latest/website:0.${env.BUILD_ID}/g' Deployment.yaml"
-            step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'Deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+        stage('Deploy to GKE'){
+            steps{
+                sh "sed -i 's/website:latest/website:0.${env.BUILD_ID}/g' Deployment.yaml"
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'Deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+            }
         }
-    }
 }
 }
