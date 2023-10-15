@@ -34,11 +34,11 @@ pipeline {
             }
         }
 
-        stage('Deleting pushed image'){
-            steps{
-                sh 'docker rmi registry.hub.docker.com/ranjarat/website:0.${env.BUILD_ID}'
-            }
-        }
+        // stage('Deleting pushed image'){
+        //     steps{
+        //         sh 'docker rmi registry.hub.docker.com/ranjarat/website:0.${env.BUILD_ID}'
+        //     }
+        // }
 
     
         stage('Deploy to GKE'){
