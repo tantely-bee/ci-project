@@ -26,11 +26,11 @@ pipeline {
         stage('Push image'){
             steps{
                 script{
-                    sh 'docker rmi 0.${env.BUILD_ID-1}'
                     docker.withRegistry('https://registry.hub.docker.com', 'hub') {
                         website.push("latest")
                         website.push("0.${env.BUILD_ID}")
                     }
+                    sh 'docker rmi 0.${env.BUILD_ID}'
                 }
             }
         }
