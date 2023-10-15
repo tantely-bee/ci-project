@@ -9,7 +9,10 @@ pipeline {
     
     stages{
         stage('Git checkout'){
-            checkout scm
+            steps{
+                checkout scm
+            }
+            
         }
     
     // stage('Push Dockerfile to Ansible'){
